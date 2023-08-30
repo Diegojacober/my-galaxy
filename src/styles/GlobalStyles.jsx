@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, styled } from "styled-components";
 import { primaryDarkColor } from '../config/colors';
 
 export default createGlobalStyle`
@@ -15,3 +15,12 @@ body{
     font-family: 'Inter', sans-serif;
 }
 `;
+
+export const Container = styled.main`
+    & {
+        width: 85%;
+        border: 1px solid red;
+        padding: 10px;
+        margin: 0 auto;
+    }
+`

@@ -1,6 +1,6 @@
 import RoutesApp from './routes/index'
 import { BrowserRouter } from 'react-router-dom'
-import GlobalStyle from './styles/GlobalStyles'
+import GlobalStyle, { Container } from './styles/GlobalStyles'
 import Header from './components/Header'
 
 function App() {
@@ -9,7 +9,9 @@ function App() {
       <BrowserRouter>
       <GlobalStyle />
       <Header/>
-        <RoutesApp />
+        <Container>
+          <RoutesApp/>
+        </Container>
       </BrowserRouter>
     </>
 
