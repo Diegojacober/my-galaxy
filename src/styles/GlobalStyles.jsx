@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { primaryColor } from '../config/colors';
+import { primaryDarkColor } from '../config/colors';
 
 export default createGlobalStyle`
 *{
@@ -9,7 +9,7 @@ export default createGlobalStyle`
 }
 
 body{
-    background-color: ${primaryColor};
+    background-color: ${primaryDarkColor};
     color: #FFF;
     width: 100%;
     font-family: 'Inter', sans-serif;
