@@ -1,8 +1,41 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# My Galaxy
 
-Currently, two official plugins are available:
+A simple project, just for pratice my habilities with react. In this website, you can type it your born date, and will see the sky in this day
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Authors
+
+- [@diegojacober](https://www.github.com/diegojacober)
+
+
+## Starting the project
+
+Clone the project
+
+```bash
+  git clone https://github.com/Diegojacober/my-galaxy.git
+```
+
+Enter on directory
+
+```bash
+  cd my-galaxy
+```
+
+Install the dependencies
+
+```bash
+  npm install
+  yarn install
+  pnpm install
+```
+
+Start the project
+
+```bash
+  npm run start
+  yarn dev
+  pnpm dev
+```
+
