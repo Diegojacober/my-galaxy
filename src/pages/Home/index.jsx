@@ -4,15 +4,16 @@ import format from "date-fns/format";
 import { AiOutlineDownload } from 'react-icons/ai';
 import imageNotFound from './../../assets/image.png';
 import api from "../../services/api";
+import { toast } from 'react-toastify';
 
 export default function Home() {
     const today = format(new Date(), "yyyy-MM-dd");
     const [userDate, setUserDate] = useState(today);
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
-    useEffect( () => {
-        
+    useEffect(() => {
+
         async function getToday() {
             setLoading(true)
             const response = await api.get('/planetary/apod', {
@@ -21,12 +22,17 @@ export default function Home() {
                     'api_key': import.meta.env.VITE_API_KEY
                 }
             })
-            .then((resp) => {
-                setLoading(false)
-                setData(resp.data)
-            }) 
+                .then((resp) => {
+                    setLoading(false)
+                    setData(resp.data)
+                })
+                .catch(() => {
+                    toast.error("We can't find a image for this day")
+                    setLoading(false)
+                    setUserDate(today)
+                })
         }
-        
+
         getToday()
     }, []);
 
@@ -38,12 +44,49 @@ export default function Home() {
                 'date': userDate
             }
         })
-        .then((resp) => {
-            setLoading(false)
-            console.log(resp)
-            setData(resp.data)
-        }) 
+            .then((resp) => {
+                setLoading(false)
+                setData(resp.data)
+            })
+            .catch(() => {
+                toast.error("We can't find a image for this day")
+                setLoading(false)
+                setUserDate(today)
+            })
     }
+
+    async function downloadImage(
+        imageSrc,
+        nameOfDownload = 'my-day.jpg',
+      ) {
+        const response = await fetch(imageSrc);
+        console.log(response)
+      
+        const blobImage = await response.blob();
+      
+        const href = URL.createObjectURL(blobImage);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = href;
+        anchorElement.download = nameOfDownload;
+        document.body.appendChild(anchorElement);
+        anchorElement.click();
+        document.body.removeChild(anchorElement);
+        window.URL.revokeObjectURL(href);
+      }
+
+      function image() {
+        downloadImage(
+            data.hdurl,
+            'my-day.png',
+          )
+          .then(() => {
+            console.log('The image has been downloaded');
+          })
+          .catch(err => {
+            console.log('Error downloading image: ', err);
+          });
+      }
+
 
     return (
         <S.Content>
@@ -61,7 +104,7 @@ export default function Home() {
 
 
             {loading ? (
-                <S.Loader/>
+                <S.Loader />
             ) :
                 (
                     <S.Main>
@@ -70,19 +113,19 @@ export default function Home() {
                             {!data && !data.hdurl ?
                                 (<img src="" alt="" />) :
                                 (
-                                    <img src={data.hdurl} alt="" draggable={false} />
+                                    <img src={data.url} alt="" draggable={false} />
                                 )}
 
-                            <S.BtnDownload>
+                            <S.BtnDownload onClick={image}>
                                 <p>Download</p>
-                                <AiOutlineDownload size={15} />
+                                <AiOutlineDownload size={25} />
                             </S.BtnDownload>
                         </S.ImageContent>
 
                         <S.Description>
-                            <h4>{ data.title }</h4>
+                            <h4>{data.title}</h4>
 
-                            <p> { data.explanation } </p>
+                            <p> {data.explanation} </p>
 
                         </S.Description>
                     </S.Main>

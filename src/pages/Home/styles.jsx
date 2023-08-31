@@ -96,6 +96,8 @@ export const ImageContent = styled.article`
 
 export const BtnDownload = styled.a`
     & {
+        text-decoration: none;
+        color: #FFF;
         margin-top: 10px;
         display: flex;
         align-items: center;
