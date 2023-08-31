@@ -19,8 +19,7 @@ body{
 export const Container = styled.main`
     & {
         width: 85%;
-        border: 1px solid red;
-        padding: 10px;
+        padding: 0 10px;
         margin: 0 auto;
     }
 `
