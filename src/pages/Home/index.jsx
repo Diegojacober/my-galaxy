@@ -2,13 +2,48 @@ import React, { useEffect, useState } from "react"
 import * as S from './styles';
 import format from "date-fns/format";
 import { AiOutlineDownload } from 'react-icons/ai';
-import imageNotFound from './../../assets/image.png'
+import imageNotFound from './../../assets/image.png';
+import api from "../../services/api";
 
 export default function Home() {
     const today = format(new Date(), "yyyy-MM-dd");
     const [userDate, setUserDate] = useState(today);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false)
+
+    useEffect( () => {
+        
+        async function getToday() {
+            setLoading(true)
+            const response = await api.get('/planetary/apod', {
+                params: {
+                    'date': userDate,
+                    'api_key': import.meta.env.VITE_API_KEY
+                }
+            })
+            .then((resp) => {
+                setLoading(false)
+                setData(resp.data)
+            }) 
+        }
+        
+        getToday()
+    }, []);
+
+    const getData = async () => {
+        setLoading(true)
+        const response = await api.get('/planetary/apod', {
+            params: {
+                'api_key': import.meta.env.VITE_API_KEY,
+                'date': userDate
+            }
+        })
+        .then((resp) => {
+            setLoading(false)
+            console.log(resp)
+            setData(resp.data)
+        }) 
+    }
 
     return (
         <S.Content>
@@ -20,7 +55,7 @@ export default function Home() {
             {loading ? (
                 <S.ButtonInactive href="#" >See my day</S.ButtonInactive>
             ) : (
-                <S.Button href="#" >See my day</S.Button>
+                <S.Button href="#" onClick={getData}>See my day</S.Button>
             )}
 
 
@@ -32,10 +67,10 @@ export default function Home() {
                     <S.Main>
                         <S.ImageContent>
 
-                            {!data ?
+                            {!data && !data.hdurl ?
                                 (<img src="" alt="" />) :
                                 (
-                                    <img src={imageNotFound} alt="" draggable={false} />
+                                    <img src={data.hdurl} alt="" draggable={false} />
                                 )}
 
                             <S.BtnDownload>
@@ -45,12 +80,9 @@ export default function Home() {
                         </S.ImageContent>
 
                         <S.Description>
-                            <h4>Description</h4>
+                            <h4>{ data.title }</h4>
 
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab ipsam fugit repudiandae? Dolorum officiis culpa quisquam. Doloremque fugit aperiam pariatur voluptatum ratione repellendus eum magnam tempore corrupti sapiente. Totam, sit?
-                                Voluptatum, molestiae rem dolor, animi, in incidunt quibusdam quisquam nisi voluptas illo tempora magnam dolorem harum magni? Voluptates ut, ab voluptatem hic eum libero, quisquam incidunt porro excepturi dolor nesciunt.
-                                Odit omnis nulla ad quidem recusandae, corporis itaque obcaecati cumque provident tempore magni harum iste aspernatur? Iste quaerat doloribus impedit, sunt tempora quae inventore repudiandae iure deleniti nesciunt, minus magni.
-                            </p>
+                            <p> { data.explanation } </p>
 
                         </S.Description>
                     </S.Main>
